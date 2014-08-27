@@ -11,3 +11,5 @@ class TestProperty(TestCase):
         """
         prop = Property(1, "format", "pdf")
         prop.tostring()
+        prop.uid = prop.uid + 1
+        prop.tostring()

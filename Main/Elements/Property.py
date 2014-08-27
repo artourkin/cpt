@@ -17,5 +17,5 @@ class Property:
         """
         printing the fields of the Property class
         """
-        result = ''.join(['uid: ', str(self.uid), ', name: ', self.name, ', value: ', self.value])
+        result = "".join(["uid: ", str(self.uid), ", name: ", self.name, ", value: ", self.value])
         print result
