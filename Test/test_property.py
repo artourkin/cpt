@@ -1,5 +1,6 @@
 from unittest import TestCase
 from Main.Elements.Property import Property
+from Main.Elements.Source import Source
 
 __author__ = 'artur'
 
@@ -9,7 +10,8 @@ class TestProperty(TestCase):
         """
         Testing Property class
         """
-        prop = Property(1, "format", "pdf")
-        prop.tostring()
+        source = Source("Artur", "bare hands")
+        prop = Property(1, "format", "pdf", source)
+        prop.echo()
         prop.uid = prop.uid + 1
-        prop.tostring()
+        prop.echo()

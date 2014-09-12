@@ -20,4 +20,4 @@ class Property:
         """
         result = ""
         result += "uid: " + str(self.uid) + ", name: " + self.name + ", value: " + self.value + " " + self.source.echo()
-        print result
+        print(result)

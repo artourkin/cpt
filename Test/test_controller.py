@@ -7,4 +7,4 @@ __author__ = 'artur'
 class TestController(TestCase):
     def test_process(self):
         cntr = Controller()
-        cntr.process("/home/artur/rnd/git/cpt/Test/")
+        cntr.process("Resources/FITS/")

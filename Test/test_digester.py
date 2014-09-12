@@ -6,7 +6,7 @@ __author__ = 'artur'
 class TestDigester(TestCase):
     def test_eat(self):
         digester=Digester()
-        result=digester.eat("/home/artur/Downloads/manifest.txt")
+        result=digester.eat("Resources/FITS/F0.xml")
         result[0].echo()
         result[1].echo()
         result[2].echo()

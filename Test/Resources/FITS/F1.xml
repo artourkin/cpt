@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fits xmlns="http://hul.harvard.edu/ois/xml/ns/fits/fits_output" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hul.harvard.edu/ois/xml/ns/fits/fits_output http://hul.harvard.edu/ois/xml/xsd/fits/fits_output.xsd" version="0.6.2" timestamp="9/5/14 5:27 PM">
+  <identification>
+    <identity format="Tagged Image File Format" mimetype="image/tiff" toolname="FITS" toolversion="0.6.2">
+      <tool toolname="Jhove" toolversion="1.5" />
+      <tool toolname="file utility" toolversion="5.09" />
+      <tool toolname="Exiftool" toolversion="9.06" />
+      <tool toolname="Droid" toolversion="3.0" />
+      <tool toolname="NLNZ Metadata Extractor" toolversion="3.4GA" />
+      <tool toolname="ffident" toolversion="0.2" />
+      <version toolname="Jhove" toolversion="1.5" status="CONFLICT">5.0</version>
+      <version toolname="Droid" toolversion="3.0" status="CONFLICT">3</version>
+      <version toolname="Droid" toolversion="3.0" status="CONFLICT">4</version>
+      <version toolname="Droid" toolversion="3.0" status="CONFLICT">6</version>
+      <externalIdentifier toolname="Droid" toolversion="3.0" type="puid">fmt/7</externalIdentifier>
+      <externalIdentifier toolname="Droid" toolversion="3.0" type="puid">fmt/8</externalIdentifier>
+      <externalIdentifier toolname="Droid" toolversion="3.0" type="puid">fmt/9</externalIdentifier>
+      <externalIdentifier toolname="Droid" toolversion="3.0" type="puid">fmt/10</externalIdentifier>
+    </identity>
+  </identification>
+  <fileinfo>
+    <size toolname="Jhove" toolversion="1.5">27855849</size>
+    <creatingApplicationName toolname="Jhove" toolversion="1.5">RollFilm Ver 2.2n</creatingApplicationName>
+    <lastmodified toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">2014:09:05 17:27:34+01:00</lastmodified>
+    <filepath toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">roda:3/roda:8/F1</filepath>
+    <filename toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">/home/roda/roda/tomcat/apache-tomcat-6.0.39/temp/WO1_BNER_1882_03_22-0009.tif.tiff3285853298244632481.tmp</filename>
+    <md5checksum toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">3c89832e68c5a5a9854b41591ed64c60</md5checksum>
+    <fslastmodified toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">1409934454000</fslastmodified>
+  </fileinfo>
+<representationinfo>
+<original toolname="RODA" toolversion="1.0.0">false</original>
+</representationinfo>
+  <filestatus>
+    <well-formed toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">true</well-formed>
+    <valid toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">true</valid>
+  </filestatus>
+  <metadata>
+    <image>
+      <byteOrder toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">little endian</byteOrder>
+      <compressionScheme toolname="Jhove" toolversion="1.5">Uncompressed</compressionScheme>
+      <imageWidth toolname="Jhove" toolversion="1.5">4672</imageWidth>
+      <imageHeight toolname="Jhove" toolversion="1.5">5952</imageHeight>
+      <colorSpace toolname="Jhove" toolversion="1.5">BlackIsZero</colorSpace>
+      <orientation toolname="Jhove" toolversion="1.5">normal*</orientation>
+      <samplingFrequencyUnit toolname="Jhove" toolversion="1.5" status="CONFLICT">in.</samplingFrequencyUnit>
+      <samplingFrequencyUnit toolname="Exiftool" toolversion="9.06" status="CONFLICT">inches</samplingFrequencyUnit>
+      <xSamplingFrequency toolname="Jhove" toolversion="1.5">300</xSamplingFrequency>
+      <ySamplingFrequency toolname="Jhove" toolversion="1.5">300</ySamplingFrequency>
+      <bitsPerSample toolname="Jhove" toolversion="1.5">8</bitsPerSample>
+      <samplesPerPixel toolname="Jhove" toolversion="1.5">1</samplesPerPixel>
+      <imageProducer toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Apex CoVantage for the British Library</imageProducer>
+      <scanningSoftwareName toolname="Jhove" toolversion="1.5">RollFilm Ver 2.2n</scanningSoftwareName>
+      <scannerManufacturer toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">Wicks and Wilson</scannerManufacturer>
+      <scannerModelName toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">RS300</scannerModelName>
+    </image>
+  </metadata>
+</fits>
+
