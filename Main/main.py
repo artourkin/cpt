@@ -4,16 +4,16 @@ class animal:
     def __init__(self):
         pass
     def make_sound(self):
-        print "gav gav"
+        print("gav gav")
 
 class cat(animal):
     def make_sound(self):
-        print "mew"
+        print("mew")
 
-print "Hello world"
+print("Hello world")
 c = animal()
 c.make_sound()
 c.name = "Murzik"
 
-print dict(c)
+print(dict(c))
 
