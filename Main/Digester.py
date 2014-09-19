@@ -1,24 +1,23 @@
 from Main.Elements.Property import Property
-from Main.Elements.Source import Source
+from Main.XMLParser import XMLParser
 
 __author__ = 'artur'
 
-import os
-
-
 class Digester:
-    def __init__(self):
-        pass
+    def __init__(self, cfgpath):
+        self.parser = XMLParser()
+        self.xpaths = self.parser.loadCFG(cfgpath)
 
     def eat(self, filename):
-        file_object = open(filename, "r")
-        content = ""
-        for line in file_object:
-            content += line
-        file_object.close()
-        extension = os.path.splitext(filename)[1]
-        source = Source("Artur", "bare hands")
-        extension = Property(1, "extension", extension, source)
-        filename = Property(2, "file", filename, source)
-        content = Property(3, "content", content, source)
-        return extension, filename, content
+        properties=[]
+        for line in self.xpaths:
+            result = []
+            for xpath in line:
+                file_object = open(filename, "r")
+                value = self.parser.extractXPath(xpath, file_object)
+                result.append(value)
+
+            prop = Property(result[0], result[1], result[2], result[3], result[4])
+            properties.append(prop)
+
+        return properties

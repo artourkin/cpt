@@ -5,8 +5,5 @@ __author__ = 'artur'
 
 class TestDigester(TestCase):
     def test_eat(self):
-        digester=Digester()
+        digester=Digester("Resources/fits.cfg")
         result=digester.eat("Resources/FITS/F0.xml")
-        result[0].echo()
-        result[1].echo()
-        result[2].echo()
