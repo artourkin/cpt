@@ -10,6 +10,10 @@
       <version toolname="Jhove" toolversion="1.5">1.0</version>
       <externalIdentifier toolname="Droid" toolversion="3.0" type="puid">fmt/101</externalIdentifier>
     </identity>
+    <identity format="Hyper Text Markup Language" mimetype="text/html" toolname="FITS" toolversion="0.6.2">
+      <tool toolname="NewLife" toolversion="0.99" />
+      <version toolname="NewLife" toolversion="0.99">1.0</version>
+    </identity>
   </identification>
   <fileinfo>
     <size toolname="Jhove" toolversion="1.5">512</size>

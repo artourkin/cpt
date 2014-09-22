@@ -13,11 +13,16 @@ class Digester:
         for line in self.xpaths:
             result = []
             file_object = open(filename, "r")
-            value = self.parser.extractXPath(line, file_object)
-            result.append(value)
 
-            #TODO: for each set of values in result there should be a separate property
-            #prop = Property(result[0], result[1], result[2], result[3], result[4])
-            #properties.append(prop)
+            xml = file_object.read().replace('\n', '').replace(' xmlns=', ' xmlnamespace=')
+            xml = xml.encode("utf-8")
+
+            value = self.parser.extractXPath(line, xml)
+            #result.append(value)
+
+
+            for val in value:
+                prop = Property(val[0], val[1], val[2], val[3], val[4])
+                properties.append(prop)
 
         return properties
