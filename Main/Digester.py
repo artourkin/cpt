@@ -3,26 +3,26 @@ from Main.XMLParser import XMLParser
 
 __author__ = 'artur'
 
+
 class Digester:
     def __init__(self, cfgpath):
         self.parser = XMLParser()
         self.xpaths = self.parser.loadCFG(cfgpath)
 
     def eat(self, filename):
-        properties=[]
+        properties = []
+        result = []
+        file_object = open(filename, "r")
+        xml = file_object.read().replace('\n', '').replace(' xmlns=', ' xmlnamespace=')
+        xml = xml.encode("utf-8")
+
+        result += self.parser.extractFormatInfo(xml)
+        result += self.parser.extractMimeType(xml)
         for line in self.xpaths:
-            result = []
-            file_object = open(filename, "r")
+            result.append(self.parser.extractXPath(line, xml))
 
-            xml = file_object.read().replace('\n', '').replace(' xmlns=', ' xmlnamespace=')
-            xml = xml.encode("utf-8")
-
-            value = self.parser.extractXPath(line, xml)
-            #result.append(value)
-
-
-            for val in value:
-                prop = Property(val[0], val[1], val[2], val[3], val[4])
-                properties.append(prop)
+        for value in result:
+            prop = Property(value[0], value[1], value[2], value[3], value[4])
+            properties.append(prop)
 
         return properties
