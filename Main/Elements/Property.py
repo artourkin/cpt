@@ -20,7 +20,7 @@ class Property:
         self.fileid = fileid
         self.name = name
         self.value = value
-        self.source = Source(source_name, source_version)
+        self.source = [].append(Source(source_name, source_version))
 
     def echo(self):
         """
@@ -32,11 +32,13 @@ class Property:
         print(result)
 
     def toJSON(self):
+        sources=[]
+        for s in source:
+            sources.append(s.name+";"+s.version)
         result = {"fileID": self.fileid,
                   "property_name": self.name,
                   "property_value": self.value,
-                  "source_name": self.source.name,
-                  "source_version": self.source.version
+                  "sources": sources                  #TODO: refactor the project according to this json mapping. Sources will be put together
         }
         return result
 
