@@ -19,7 +19,6 @@ class XMLParser:
 
     def extractXPath(self, xpaths, xml):
         result = []
-        xpaths_copy = list(xpaths)
 
         tree = etree.XML(xml)
         tmp_result = []
@@ -67,8 +66,11 @@ class XMLParser:
                                 k += 1
                     arrayarray.append(array)
                     return arrayarray
+        tmp_result[3]=[tmp_result[3]+";"+tmp_result[4]]
+        del tmp_result[4]
 
-        return tmp_result
+        result.append(tmp_result)
+        return result
 
     def applyXPathToElement(self, xpath, element):
         result = element.xpath(xpath)
@@ -83,15 +85,18 @@ class XMLParser:
             format = identity.xpath("@format")
             versions = identity.xpath("//version")
             tools = identity.xpath("//tool")
+            sources=[]
             for tool in tools:
                 tool_name = tool.xpath("@toolname")
                 tool_version = tool.xpath("@toolversion")
-                result = [] + fileid + ["format"] + format + tool_name + tool_version
-                results.append(result)
+                sources.append(tool_name[0]+";"+tool_version[0])
+            result = [] + fileid + ["format"] + format + [sources]
+            results.append(result)
             for version in versions:
                 version_value = version.xpath("text()")
                 version_tool = version.xpath("@toolname")
                 version_tool_version = version.xpath("@toolversion")
+                sources=version_tool[0] + ";" + version_tool_version[0]
                 shouldBeAddedSeparately = True
 
                 #for line in results:
@@ -101,7 +106,7 @@ class XMLParser:
 
               #  if shouldBeAddedSeparately:
                 formatVersion=format[0] + ";" + version_value[0]
-                result = [] + fileid + ["format"] + [formatVersion] + version_tool + version_tool_version
+                result = [] + fileid + ["format"] + [formatVersion] + [[sources]]
                 results.append(result)
 
         return results
@@ -114,11 +119,14 @@ class XMLParser:
         for identity in identities:
             mimetype = identity.xpath("@mimetype")
             tools = identity.xpath("//tool")
+            sources=[]
             for tool in tools:
                 tool_name = tool.xpath("@toolname")
                 tool_version = tool.xpath("@toolversion")
-                result = []+ fileid + ["mimetype"] + mimetype + tool_name + tool_version
-                results.append(result)
+                sources.append(tool_name[0]+";"+tool_version[0])
+            result = []+ fileid + ["mimetype"] + mimetype + [sources]
+            results.append(result)
+
         return results
 
 

@@ -18,7 +18,7 @@ class Aggregator:
             }
 
         ])
-        pass
+        return result
 
     def find(self, query):
         """
