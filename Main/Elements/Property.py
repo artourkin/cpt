@@ -14,16 +14,14 @@ class Property:
         self.fileid = fileid
         self.name = name
         self.value = value
-        self.source=[]
-        for s in source:
-            source_name,source_version=s.split(";")
-            self.source.append(Source(source_name,source_version))
+        self.source = []
 
-    #def __init__(self, fileid, name, value, source_name, source_version):
-    #    self.fileid = fileid
-    #    self.name = name
-    #    self.value = value
-    #    self.source = [].append(Source(source_name, source_version))
+        if isinstance(source, Source):
+            self.source.append(source)
+        else:
+            for s in source:
+                source_name, source_version = s.split(";")
+                self.source.append(Source(source_name, source_version))
 
     def echo(self):
         """
@@ -35,13 +33,14 @@ class Property:
         print(result)
 
     def toJSON(self):
-        sources=[]
+        sources = []
         for s in self.source:
-            sources.append(s.name+";"+s.version)
+            sources.append(s.name + ";" + s.version)
         result = {"fileID": self.fileid,
                   "property_name": self.name,
                   "property_value": self.value,
-                  "sources": sources                  #TODO: refactor the project according to this json mapping. Sources will be put together
+                  "sources": sources
+                  #TODO: refactor the project according to this json mapping. Sources will be put together
         }
         return result
 

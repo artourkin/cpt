@@ -1,3 +1,6 @@
+from Main.Common.Configurator import Configurator
+from Main.Utils.MongoUtils import *
+
 __author__ = 'artur'
 
 from os import walk
@@ -6,25 +9,18 @@ from pymongo import MongoClient
 
 from Main.Digester import Digester
 
-
 class Controller:
-    db = ''
-    digester = ''
 
-    def __init__(self, dbHost, dbPort, dbName):
-        client = MongoClient(dbHost, dbPort)
-        self.db = client[dbName]
+    def __init__(self):
         self.digester = Digester("Resources/fits.cfg")
 
-
-    def process(self, path, collectionName):
-        collection = self.db[collectionName]
+    def ingest(self, path):
+        collection = Configurator().getCollection()
         files = []
         for (dirpath, dirnames, filenames) in walk(path):
             files.extend(filenames)
         for file in files:
             properties = self.digester.eat(path + file)
             for prop in properties:
-                json = prop.toJSON()
-                collection.insert(json)
+                MongoUtils.insert(prop)
 
