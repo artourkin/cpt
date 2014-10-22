@@ -1,5 +1,5 @@
 from unittest import TestCase
-from Main.Aggregator import Aggregator
+from main.Aggregator import Aggregator
 
 __author__ = 'artur'
 

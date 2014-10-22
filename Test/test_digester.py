@@ -1,5 +1,5 @@
 from unittest import TestCase
-from Main.Digester import Digester
+from main.Digester import Digester
 
 __author__ = 'artur'
 

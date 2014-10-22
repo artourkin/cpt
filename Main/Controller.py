@@ -1,26 +1,81 @@
+from Queue import Queue
+import threading
+
+from os import walk
 from Main.Common.Configurator import Configurator
-from Main.Utils.MongoUtils import *
+
+from Main.Digester import Digester
+from Main.Utils.MongoUtils import MongoUtils
 
 __author__ = 'artur'
 
-from os import walk
 
-from pymongo import MongoClient
-
-from Main.Digester import Digester
-
-class Controller:
+class Controller(threading.Thread):
+    queue = Queue()
+    jobs = []
+    filter = {}
 
     def __init__(self):
-        self.digester = Digester("Resources/fits.cfg")
+        super(Controller, self).__init__()
+        Configurator().setup()
+        self.signal = True
 
-    def ingest(self, path):
-        collection = Configurator().getCollection()
+    def run(self):
+        while self.signal:
+            command = self.queue.get()
+            self.execute(command)
+
+    def execute(self, command):
+        job = threading.Thread(target=self.commands[command.name], args=(self, command.args,))
+        self.jobs.append(job)
+        job.start()
+        job.join()  # This affects serial or parallel execution of jobs
+
+
+    # The next section contains all the possible jobs.
+    # The job name should be included in the commands dictionary in the end.
+
+    def ingest(self, args):
+        digester = Digester("Resources/fits.cfg")
         files = []
+        path = args[0]
         for (dirpath, dirnames, filenames) in walk(path):
             files.extend(filenames)
         for file in files:
-            properties = self.digester.eat(path + file)
+            properties = []
+            try:
+                properties = digester.eat(path + file)
+            except:
+                pass
             for prop in properties:
                 MongoUtils.insert(prop)
+        return "done"
+
+    def cleanCollection(self, args):
+        MongoUtils.cleanCollection(args[0])
+        return "done"
+
+    def selectCollection(self, args):
+        Configurator().selectCollection(
+            args[0])  # TODO: be aware, if some operation on the current collection happening,
+        # changing a collection name will DEFINITELY affect this operation
+
+    def stopThreads(self, args):
+        self.signal = False
+        return "done"
+
+    def addFilter(self, args):
+        args="".join(args).split(" ")
+        if isinstance(args, list) and args != []:
+            self.filter[args[0]] = args[1]
+        return "done"
+
+    commands = {"ingest": ingest,
+                "stop": stopThreads,
+                "cleanCollection": cleanCollection,
+                "selectCollection": selectCollection,
+                "addFilter": addFilter}
+
+
+
 

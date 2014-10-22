@@ -1,3 +1,4 @@
+from bson import SON
 from Main.Common.Configurator import Configurator
 from Main.Elements.Property import Property
 
@@ -32,7 +33,38 @@ class MongoUtils:
         collection.remove(json)
 
     @staticmethod
+    def cleanCollection(collectionName):
+        db = Configurator().getDB()
+        db[collectionName].drop()
+
+    @staticmethod
     def update(old_property, new_property):
         MongoUtils.delete(old_property)
         MongoUtils.insert(new_property)
 
+    @staticmethod
+    def findbyFile(fileID):
+        collection = Configurator().getCollection()
+        cursor = collection.find({"fileID": fileID})
+        result = []
+        for entry in cursor:
+            result.append(Utils.toProperty(entry))
+        return result
+
+    @staticmethod
+    def aggregate(where, groupby):
+        collection = Configurator().getCollection()
+        # where=Configurator().filter
+        query = [
+            {"$match": where},
+            {"$group": groupby},
+            {"$sort": SON([("count", -1)])}
+        ]
+        result = collection.aggregate(query)
+        return result
+
+        # @staticmethod
+        # def aggregate(query):
+        #     collection = Configurator().getCollection()
+        #     result = collection.aggregate(query)
+        #     return result
