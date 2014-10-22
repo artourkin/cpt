@@ -4,7 +4,6 @@ from Main.Utils.MongoUtils import MongoUtils
 
 __author__ = 'artur'
 
-
 class TestfindbyFile(TestCase):
     Configurator().setup()
     MongoUtils.findbyFile("/home/petrov/taverna/tmp/002/002381.pdf")

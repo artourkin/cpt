@@ -70,11 +70,17 @@ class Controller(threading.Thread):
             self.filter[args[0]] = args[1]
         return "done"
 
+    def aggregate(self, args):
+        groupby = {"_id": "$" + args[0], "count": {"$sum": 1}}
+        result = MongoUtils.aggregate(self.filter,groupby)
+        print result
+
     commands = {"ingest": ingest,
                 "stop": stopThreads,
                 "cleanCollection": cleanCollection,
                 "selectCollection": selectCollection,
-                "addFilter": addFilter}
+                "addFilter": addFilter,
+                "aggregate": aggregate}
 
 
 

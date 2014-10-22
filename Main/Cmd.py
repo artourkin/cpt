@@ -28,13 +28,18 @@ class Cmd(cmd.Cmd):
         self.controller.queue.put(clean_collection)
         print "Collection " + args + " cleaned"
 
-    def do_add_filter(self,args):
-        add_filter=Command("addFilter", args)
+    def do_add_filter(self, args):
+        add_filter = Command("addFilter", args)
         self.controller.queue.put(add_filter)
         print "Filter: " + args + " added"
+
+    def do_aggregate(self, args):
+        aggregate = Command("aggregate", args)
+        self.controller.queue.put(aggregate)
+        print "Aggregating " + args
+
     def do_exit(self, args):
         return True
-
 
 
 if __name__ == '__main__':
