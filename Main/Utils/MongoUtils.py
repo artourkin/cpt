@@ -12,9 +12,9 @@ class MongoUtils:
     def insert(property):
         collection = Configurator().getCollection()
         json = Utils.toJSON(property)
-        count = collection.find(json).limit(1).count()
-        if count < 1:
-            collection.insert(json)
+        #count = collection.find(json).limit(1).count()
+        #if count < 1:
+        collection.insert(json)
 
     @staticmethod
     def find(property):

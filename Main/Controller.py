@@ -29,7 +29,7 @@ class Controller(threading.Thread):
         job = threading.Thread(target=self.commands[command.name], args=(self, command.args,))
         self.jobs.append(job)
         job.start()
-        job.join()  # This affects serial or parallel execution of jobs
+        #job.join()  # This affects serial or parallel execution of jobs
 
 
     # The next section contains all the possible jobs.
@@ -38,13 +38,17 @@ class Controller(threading.Thread):
     def ingest(self, args):
         digester = Digester("Resources/fits.cfg")
         files = []
-        path = args[0]
+        if isinstance(args, list):
+            path = args[0]
+        else:
+            path = args
         for (dirpath, dirnames, filenames) in walk(path):
+            filenames = [dirpath + "/" + x for x in filenames]
             files.extend(filenames)
         for file in files:
             properties = []
             try:
-                properties = digester.eat(path + file)
+                properties = digester.eat(file)
             except:
                 pass
             for prop in properties:
@@ -65,14 +69,14 @@ class Controller(threading.Thread):
         return "done"
 
     def addFilter(self, args):
-        args="".join(args).split(" ")
+        args = "".join(args).split(" ")
         if isinstance(args, list) and args != []:
             self.filter[args[0]] = args[1]
         return "done"
 
     def aggregate(self, args):
         groupby = {"_id": "$" + args[0], "count": {"$sum": 1}}
-        result = MongoUtils.aggregate(self.filter,groupby)
+        result = MongoUtils.aggregate(self.filter, groupby)
         print result
 
     commands = {"ingest": ingest,

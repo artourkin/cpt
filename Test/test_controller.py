@@ -15,10 +15,8 @@ class TestController(TestCase):
         cmd = Command("ingest", "Resources/FITS/")
         controller.queue.put(cmd)
 
-
-
         cmd2 = Command("clear", "")
-      #  controller.queue.put(cmd2)
+        # controller.queue.put(cmd2)
 
         cmd1 = Command("stop", "")
         controller.queue.put(cmd1)
@@ -28,3 +26,6 @@ class TestController(TestCase):
         # Configurator().setup()
         #cntr = Controller()
         #cntr.ingest("Resources/FITS/")
+    def test_ingest(self):
+        controller = Controller()
+        controller.ingest("/data/FITS/govdocs_subset1")
