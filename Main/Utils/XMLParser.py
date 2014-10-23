@@ -1,6 +1,4 @@
 from lxml import etree
-import io
-from lxml.etree import _ElementUnicodeResult
 
 __author__ = 'artur'
 

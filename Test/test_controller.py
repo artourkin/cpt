@@ -1,8 +1,8 @@
 from unittest import TestCase
+
 from Main.Common.Command import Command
-from Main.Common.Configurator import Configurator
-from Main.Common.Params import *
-from Main.Controller import Controller
+from Main.Logic.Controller import Controller
+
 
 __author__ = 'artur'
 

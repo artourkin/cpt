@@ -1,5 +1,5 @@
 from Main.Common.Command import Command
-from Main.Controller import Controller
+from Main.Logic.Controller import Controller
 
 __author__ = 'artur'
 
@@ -41,5 +41,3 @@ class Cmd(cmd.Cmd):
     def do_exit(self, args):
         return True
 
-if __name__ == '__main__':
-    Cmd().cmdloop()

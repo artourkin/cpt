@@ -1,5 +1,5 @@
 from Main.Elements.Property import Property
-from Main.XMLParser import XMLParser
+from Main.Utils.XMLParser import XMLParser
 
 __author__ = 'artur'
 

@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import pymongo
 from Main.Common.Params import DB_HOST, DB_PORT, DB_NAME, DB_COLLECTION_NAME
 
 __author__ = 'artur'
@@ -13,8 +14,11 @@ class Configurator:
     def setup(self):
         client = MongoClient(DB_HOST, DB_PORT)
         self.db = client[DB_NAME]
-      #  self.filter = {}                        #TODO: what will happen to a shared filter in a web app?
+        # self.filter = {}                        #TODO: what will happen to a shared filter in a web app?
         self.selectCollection(DB_COLLECTION_NAME)
+        self.collection.ensure_index(
+            [("property_name", pymongo.ASCENDING), ("property_value", pymongo.ASCENDING), ("fileID", pymongo.ASCENDING),
+             ("sources", pymongo.ASCENDING), ("unique", True)])
 
     def getCollection(self):
         return self.collection

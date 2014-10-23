@@ -1,6 +1,6 @@
 from unittest import TestCase
-from main.Elements.Property import Property
-from main.Elements.Source import Source
+from Main.Elements.Property import Property
+from Main.Elements.Source import Source
 
 __author__ = 'artur'
 

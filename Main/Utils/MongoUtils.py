@@ -1,6 +1,5 @@
 from bson import SON
 from Main.Common.Configurator import Configurator
-from Main.Elements.Property import Property
 
 from Main.Utils.Utils import *
 

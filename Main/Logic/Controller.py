@@ -1,11 +1,11 @@
 from Queue import Queue
 import threading
-
 from os import walk
-from Main.Common.Configurator import Configurator
 
-from Main.Digester import Digester
+from Main.Common.Configurator import Configurator
+from Main.Logic.Digester import Digester
 from Main.Utils.MongoUtils import MongoUtils
+
 
 __author__ = 'artur'
 
