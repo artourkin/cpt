@@ -9,4 +9,3 @@ class TestAggregator(TestCase):
         self.aggregator = Aggregator("localhost", 27017, "cpt_core")
         result= self.aggregator.get_frequency("property_value")
         result = self.aggregator.find({ "fileID" : "/home/roda/roda/tomcat/apache-tomcat-6.0.39/temp/METS.xml1510048826782337618.tmp" } )
-        pass
