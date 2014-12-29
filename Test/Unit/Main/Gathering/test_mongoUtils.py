@@ -1,5 +1,5 @@
+import os
 from unittest import TestCase
-import unittest
 from Main.Common.Configurator import Configurator
 from Main.Elements.Property import Property
 from Main.Logic.Digester import Digester
@@ -8,40 +8,31 @@ import copy
 
 __author__ = 'artur'
 
-
-# class Testaggregate(TestCase):
-# #    Configurator().setup()
-# where = {"property_name": "lastmodified"}
-#    Configurator().addFilterCondition(where)
-#    groupby = {"_id": "$property_value", "count": {"$sum": 1}}
-#    result = MongoUtils.aggregate(groupby)
-#    print result
-
-
 class TestMongoUtils(TestCase):
     properties = []
 
     def setUp(self):
-        digester = Digester("../../../Resources/fits.cfg")
-        self.properties = digester.eat("../../../Resources/FITS/F0.xml")
+        BASE_DIR = os.path.dirname(__file__)
+        digester = Digester(BASE_DIR+"/../../../Resources/fits.cfg")
+        self.properties = digester.eat(BASE_DIR+"/../../../Resources/FITS/F0.xml")
         Configurator().setup("unittest", "one")
         for property in self.properties:
             if isinstance(property, Property):
                 result = MongoUtils.insert(property)
 
     def test_insert(self):
-        pass
-
-    #        broken_prop = Property(None, 1, "fd", "new")
-    #  result = MongoUtils.insert(broken_prop)
-    #   self.assertFalse(result)
+       pass
+       # TODO: create an incorrect property and try to insert it into db
+       # broken_prop = Property(None, 1, "fd", None)
+       # result = MongoUtils.insert(broken_prop)
+       # self.assertFalse(result)
 
     def test_countCollectionSize(self):
         collectionSize = MongoUtils.countCollectionSize()
         self.assertEquals(collectionSize, 10)
 
-    def test_find(self):
-        properties = MongoUtils.find(self.properties[0])
+    def test_findbyProperty(self):
+        properties = MongoUtils.findbyProperty(self.properties[0])
         found_property = properties[0]
         found_value = found_property.value
         value = self.properties[0].value
@@ -52,7 +43,7 @@ class TestMongoUtils(TestCase):
         assert isinstance(modified_property, Property)
         modified_property.value += "modified"
         MongoUtils.update(self.properties[0], modified_property)
-        tmp_property = MongoUtils.find(modified_property)
+        tmp_property = MongoUtils.findbyProperty(modified_property)
         found_value = tmp_property[0].value
         value = modified_property.value
         self.assertAlmostEquals(found_value, value)
@@ -70,7 +61,3 @@ class TestMongoUtils(TestCase):
 
     def tearDown(self):
         MongoUtils.cleanCollection()
-
-
-if __name__ == '__main__':
-    unittest.main()

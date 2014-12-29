@@ -1,5 +1,5 @@
+import os
 from unittest import TestCase
-import unittest
 from Main.Common.Configurator import Configurator
 from Main.Logic.Digester import Digester
 from Main.Logic.Gatherer import Gatherer
@@ -14,13 +14,15 @@ class TestConfigurator(TestCase):
     gatherer = Gatherer()
 
     def setUp(self):
-        digester = Digester("../../../Resources/fits.cfg")
-        self.properties = digester.eat("../../../Resources/FITS/F0.xml")
+        BASE_DIR = os.path.dirname(__file__)
+        digester = Digester(BASE_DIR+"/../../../Resources/fits.cfg")
+        self.properties = digester.eat(BASE_DIR+"/../../../Resources/FITS/F0.xml")
         self.configurator.setup("unittest", "one")
-
-    def test_setup(self):
         for property in self.properties:
             self.gatherer.ingest(property)
+
+    def test_setup(self):
+
         count = MongoUtils.countCollectionSize()
         self.assertEquals(count, 10)
 
@@ -45,7 +47,3 @@ class TestConfigurator(TestCase):
 
     def tearDown(self):
         MongoUtils.cleanCollection()
-
-
-if __name__ == '__main__':
-    unittest.main()

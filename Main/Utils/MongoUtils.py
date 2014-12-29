@@ -30,13 +30,23 @@ class MongoUtils:
         return result
 
     @staticmethod
-    def find(property):
+    def findbyProperty(property):
         collection = Configurator().getCollection()
+        assert isinstance(property, Property)
         json = Utils.toJSON(property)
         cursor = collection.find(json)
         result = []
         for entry in cursor:
             result.append(Utils.toProperty(entry))
+        return result
+
+    @staticmethod
+    def find(json):
+        collection = Configurator().getCollection()
+        cursor = collection.find(json)
+        result = []
+        for entry in cursor:
+            result.append(entry)
         return result
 
     @staticmethod
@@ -65,14 +75,20 @@ class MongoUtils:
         return result
 
     @staticmethod
-    def aggregate(where, groupby):
+    def aggregate(where=None, groupby=None):
         collection = Configurator().getCollection()
         # where=Configurator().filter
-        query = [
-            {"$match": where},
-            {"$group": groupby},
-            {"$sort": SON([("count", -1)])}
-        ]
+        query=[]
+        if where:
+            query.append({"$match": where})
+        if groupby:
+            query.append({"$group": groupby})
+        query.append({"$sort": SON([("count", -1)])})
+        #query = [
+        #    {"$match": where},
+        #    {"$group": groupby},
+        #    {"$sort": SON([("count", -1)])}
+        #]
         result = collection.aggregate(query)
         return result
 

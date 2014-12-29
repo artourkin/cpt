@@ -8,20 +8,20 @@ __author__ = 'artur'
 
 
 class TestController(TestCase):
-    def test_process(self):
-        controller = Controller()
-        controller.setDaemon(True)
-        controller.start()
-        cmd = Command("ingest", "Resources/FITS/")
-        controller.queue.put(cmd)
+ #   def test_process(self):
+ #       controller = Controller()
+ #       controller.setDaemon(True)
+ #       controller.start()
+ #       cmd = Command("ingest", "Resources/FITS/")
+ #       controller.queue.put(cmd)
 
-        cmd2 = Command("clear", "")
+#        cmd2 = Command("clear", "")
         # controller.queue.put(cmd2)
 
-        cmd1 = Command("stop", "")
-        controller.queue.put(cmd1)
+#        cmd1 = Command("stop", "")
+#        controller.queue.put(cmd1)
 
-        controller.join()
+#        controller.join()
 
         # Configurator().setup()
         #cntr = Controller()

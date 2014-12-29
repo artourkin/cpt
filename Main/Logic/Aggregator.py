@@ -1,3 +1,5 @@
+from Main.Utils.MongoUtils import MongoUtils
+
 __author__ = 'artur'
 from pymongo import MongoClient
 
@@ -8,16 +10,15 @@ class Aggregator:
         self.db = client[dbName]
 
     def get_frequency(self, property):
-        result = self.db.private.aggregate([
-            #{"$match": {"property_name": "format"}},
-            {
-                "$group": {
-                            "_id": { "file": "$fileID",  "property" : "$property_name",  "property_value" : "$property_value"  } ,
-                            "count": {"$sum": 1}
-                           }
-            }
+        where = {"property_name": property}
+        groupby_text = {"_id": "$property_value", "count": {"$sum": 1}}
+        result = MongoUtils.aggregate( groupby=groupby_text )
 
-        ])
+               # "$group": {
+               #     "_id": {"file": "$fileID", "property": "$property_name", "property_value": "$property_value"},
+               #     "count": {"$sum": 1}
+               # }
+
         return result
 
     def find(self, query):
