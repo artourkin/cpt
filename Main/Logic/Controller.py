@@ -4,6 +4,7 @@ from os import walk
 
 from Main.Common.Configurator import Configurator
 from Main.Logic.Digester import Digester
+from Main.Logic.Gatherer import Gatherer
 from Main.Utils.MongoUtils import MongoUtils
 
 
@@ -11,8 +12,8 @@ __author__ = 'artur'
 
 
 class Controller(threading.Thread):
-    queue = Queue()
-    jobs = []
+    queue = Queue()      # this queue contains the commands from cmd class
+    jobs = []   # this list contains jobs which are being executed or are already executed.
     filter = {}
 
     def __init__(self):
@@ -37,6 +38,7 @@ class Controller(threading.Thread):
 
     def ingest(self, args):
         digester = Digester("Resources/fits.cfg")
+        gatherer = Gatherer()
         files = []
         if isinstance(args, list):
             path = args[0]
@@ -52,7 +54,7 @@ class Controller(threading.Thread):
             except:
                 pass
             for prop in properties:
-                MongoUtils.insert(prop)
+                gatherer.ingest(prop)
         return "done"
 
     def cleanCollection(self, args):

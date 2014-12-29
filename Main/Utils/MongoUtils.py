@@ -1,19 +1,33 @@
 from bson import SON
 from Main.Common.Configurator import Configurator
-
+import logging
 from Main.Utils.Utils import *
 
 __author__ = 'artur'
 
 
+logging.basicConfig(format = u'%(levelname)-8s [%(asctime)s] %(message)s', level = logging.DEBUG, filename = u'mylog.log')
+
 class MongoUtils:
     @staticmethod
     def insert(property):
         collection = Configurator().getCollection()
-        json = Utils.toJSON(property)
-        #count = collection.find(json).limit(1).count()
-        #if count < 1:
-        collection.insert(json)
+        try:
+            json = Utils.toJSON(property)
+            #count = collection.find(json).limit(1).count()
+            #if count < 1:
+            collection.insert(json)
+            return True
+        except ValueError:
+            logging.error("Bad Property instance")
+            return False
+
+
+    @staticmethod
+    def countCollectionSize():
+        collection = Configurator().getCollection()
+        result = collection.count()
+        return result
 
     @staticmethod
     def find(property):
@@ -32,9 +46,9 @@ class MongoUtils:
         collection.remove(json)
 
     @staticmethod
-    def cleanCollection(collectionName):
-        db = Configurator().getDB()
-        db[collectionName].drop()
+    def cleanCollection():
+        collection = Configurator().getCollection()
+        collection.drop()
 
     @staticmethod
     def update(old_property, new_property):
