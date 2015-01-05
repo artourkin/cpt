@@ -24,9 +24,13 @@ class TestAggregator(TestCase):
 
 
     def test_get_frequency(self):
-        self.aggregator = Aggregator("localhost", 27017, "cpt_core")
-        result_frequency = self.aggregator.get_frequency("last_modified")   # TODO: frequency is not calculated properly
-        result = self.aggregator.find({ "fileID" : "/home/roda/roda/tomcat/apache-tomcat-6.0.39/temp/METS.xml1510048826782337618.tmp" } )
+        self.aggregator = Aggregator()
+        result_frequency = self.aggregator.get_frequency("lastmodified")
+        self.assertEqual(result_frequency, {u'ok': 1.0, u'result': [{u'count': 1, u'_id': u'2014:09:05 17:27:22+01:00'}]})
 
+    def test_find(self):
+        self.aggregator = Aggregator()
+        result = self.aggregator.find({ "fileID" : "/home/roda/roda/tomcat/apache-tomcat-6.0.39/temp/METS.xml1510048826782337618.tmp" } )
+        self.assertIsNotNone(result)
     def tearDown(self):
         MongoUtils.cleanCollection()

@@ -7,7 +7,7 @@ from Main.Logic.Controller import Controller
 __author__ = 'artur'
 
 
-class TestController(TestCase):
+class TestController(TestCase): # TODO: Create tests for Controller
  #   def test_process(self):
  #       controller = Controller()
  #       controller.setDaemon(True)
@@ -28,4 +28,5 @@ class TestController(TestCase):
         #cntr.ingest("Resources/FITS/")
     def test_ingest(self):
         controller = Controller()
-        controller.ingest("/data/FITS/govdocs_subset1")
+        pass
+        #controller.ingest("/data/FITS/govdocs_subset1")

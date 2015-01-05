@@ -84,6 +84,8 @@ class MongoUtils:
         if groupby:
             query.append({"$group": groupby})
         query.append({"$sort": SON([("count", -1)])})
+
+
         #query = [
         #    {"$match": where},
         #    {"$group": groupby},
