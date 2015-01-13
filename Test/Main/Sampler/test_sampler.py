@@ -11,21 +11,24 @@ __author__ = 'artur'
 
 class TestSampler(TestCase):
     gatherer = Gatherer()
+
     def setUp(self):
         BASE_DIR = os.path.dirname(__file__)
-        digester = Digester(BASE_DIR+"/../../Resources/fits.cfg")
-        self.properties = digester.eat(BASE_DIR+"/../../Resources/FITS/F0.xml")
+        digester = Digester(BASE_DIR + "/../../Resources/fits.cfg")
+        self.properties = digester.eat(BASE_DIR + "/../../Resources/FITS/F0.xml")
         Configurator().setup("unittest", "one")
         for property in self.properties:
             self.gatherer.ingest(property)
 
     def test_get_distributions(self):
-
         sampler = Sampler()
-
         sampler.get_distributions(["lastmodified", "format"])
 
-
+    def test_calculate_cartesian_product(self):
+        sampler = Sampler()
+        sampler.get_distributions(["lastmodified", "format", "mimetype"])
+        sampler.calculate_cartesian_product()
 
     def tearDown(self):
         MongoUtils.cleanCollection()
+
