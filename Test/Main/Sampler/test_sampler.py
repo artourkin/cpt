@@ -29,6 +29,12 @@ class TestSampler(TestCase):
         sampler.get_distributions(["lastmodified", "format", "mimetype"])
         sampler.calculate_cartesian_product()
 
+    def test_retrieve_samples(self):
+        sampler = Sampler()
+        sampler.get_distributions(["lastmodified", "format", "mimetype"])
+        sampler.calculate_cartesian_product()
+        sampler.retrieve_samples()
+
     def tearDown(self):
         MongoUtils.cleanCollection()
 
