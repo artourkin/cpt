@@ -72,6 +72,5 @@ class Sampler():
                     prop.pop(2)
         self.samples_weighted=result
         return result
-        #for value in values.items(): #TODO: finish this method
 
 
