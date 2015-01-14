@@ -11,7 +11,7 @@ __author__ = 'artur'
 # We get distributions of the properties X. Then we get cartesian product of the bins of each distrubution, sorted as most popular first.
 # Then for each cartesian product (prop1: val1, prop2: val2,...) we create a query and submit it to mongodb.
 # If there is no result, then we skip this combination. This should mean there is no file available.
-#   If there is 1 result and it is not present in the sample collection, we put it in our resulting sample collection.
+# If there is 1 result and it is not present in the sample collection, we put it in our resulting sample collection.
 #   If there are more than 1 results, we pick the first not present in the sample collection and put it in the result.
 #
 #
@@ -75,12 +75,13 @@ class Sampler():
         self.samples_weighted = result
         return result
 
-    def retrieve_samples(self):
+    def retrieve_samples(self, max):
         aggregator = Aggregator()
-        result=[]
+        result = []
+        i = 0
         for sample in self.samples_weighted:
             query = dict()
-            property=sample[0]
+            property = sample[0]
             assert isinstance(property, list)
             query.setdefault("property_name", property[0])
             query.setdefault("property_value", property[1])
@@ -88,20 +89,55 @@ class Sampler():
 
             for document in documents:
                 assert isinstance(document, dict)
-                found=True
-                fileID=document.get("fileID")
-                tmp_documents=aggregator.findByFileID(fileID)
+                found = True
+                fileID = document.get("fileID")
+                tmp_documents = aggregator.findByFileID(fileID)
                 for sample_property in sample[:-1]:
 
                     for property in tmp_documents:
                         assert isinstance(property, Property)
                         if (property.name == sample_property[0] and
-                             property.value == sample_property[1]):
-                            found=True
+                                    property.value == sample_property[1]):
+                            found = True
                             break
-                        found=False
+                        found = False
 
-                if (found==True):
+                if (found == True):
+                    if i <= max and not fileID in result:
+                        result.append(fileID)
+                        i += 1
+        pass
+
+    def retrieve_samples(self):
+        aggregator = Aggregator()
+        result = []
+        i = 0
+        for sample in self.samples_weighted:
+            query = dict()
+            property = sample[0]
+            assert isinstance(property, list)
+            query.setdefault("property_name", property[0])
+            query.setdefault("property_value", property[1])
+            documents = aggregator.find(query, 100)
+
+            for document in documents:
+                assert isinstance(document, dict)
+                found = True
+                fileID = document.get("fileID")
+                tmp_documents = aggregator.findByFileID(fileID)
+                for sample_property in sample[:-1]:
+
+                    for property in tmp_documents:
+                        assert isinstance(property, Property)
+                        if (property.name == sample_property[0] and
+                                    property.value == sample_property[1]):
+                            found = True
+                            break
+                        found = False
+
+                if (found == True):
                     if not fileID in result:
                         result.append(fileID)
-            #TODO: test this method carefully! Potentially lots of bugs.
+
+        pass
+        #TODO: test this method carefully! Potentially lots of bugs.
