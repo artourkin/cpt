@@ -119,7 +119,7 @@ class Sampler():
             assert isinstance(property, list)
             query.setdefault("property_name", property[0])
             query.setdefault("property_value", property[1])
-            documents = aggregator.find(query, 100)
+            documents = aggregator.find(query)
 
             for document in documents:
                 assert isinstance(document, dict)

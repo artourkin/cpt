@@ -49,18 +49,18 @@ class MongoUtils:
             result.append(entry)
         return result
 
-    @staticmethod
-    def find(json, max):
-        collection = Configurator().getCollection()
-        cursor = collection.find(json)
-        result = []
-        i=0
-        for entry in cursor:
-            result.append(entry)
-            i+=1
-            if (i >=max):
-                break
-        return result
+  #  @staticmethod
+  #  def find(json, max):
+  #      collection = Configurator().getCollection()
+  #      cursor = collection.find(json)
+  #      result = []
+  #      i=0
+  #      for entry in cursor:
+  #          result.append(entry)
+  #          i+=1
+  #          if (i >=max):
+  #              break
+  #      return result
 
     @staticmethod
     def delete(property):

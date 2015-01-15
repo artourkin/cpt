@@ -30,14 +30,14 @@ class Aggregator:
 
         return result
 
-    def find(self, query, max):
-        """
-
-        :param query: query contains a dictionary of key-value pairs
-        """
-        result = MongoUtils.find(query, max)
-
-        return result
+    #def find(self, query, max):
+    #    """
+#
+#        :param query: query contains a dictionary of key-value pairs
+ #       """
+  #      result = MongoUtils.find(query, max)
+#
+ #       return result
 
     def findByFileID(self, fileID):
         result = MongoUtils.findbyFile(fileID)
