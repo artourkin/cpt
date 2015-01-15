@@ -106,7 +106,8 @@ class Sampler():
                     if i <= max and not fileID in result:
                         result.append(fileID)
                         i += 1
-        pass
+        return result
+
 
     def retrieve_samples(self):
         aggregator = Aggregator()
@@ -139,5 +140,5 @@ class Sampler():
                     if not fileID in result:
                         result.append(fileID)
 
-        pass
+        return result
         #TODO: test this method carefully! Potentially lots of bugs.

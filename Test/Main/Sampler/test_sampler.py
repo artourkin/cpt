@@ -16,8 +16,8 @@ class TestSampler(TestCase):
         BASE_DIR = os.path.dirname(__file__)
         digester = Digester(BASE_DIR + "/../../Resources/fits.cfg")
         self.properties = digester.eat(BASE_DIR + "/../../Resources/FITS/F0.xml")
-        self.properties +=digester.eat(BASE_DIR + "/../../Resources/FITS/F1.xml")
-        self.properties +=digester.eat(BASE_DIR + "/../../Resources/FITS/F2.xml")
+        self.properties += digester.eat(BASE_DIR + "/../../Resources/FITS/F1.xml")
+        self.properties += digester.eat(BASE_DIR + "/../../Resources/FITS/F2.xml")
         Configurator().setup("unittest", "one")
         for property in self.properties:
             self.gatherer.ingest(property)

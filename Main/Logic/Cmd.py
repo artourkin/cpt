@@ -38,6 +38,11 @@ class Cmd(cmd.Cmd):
         self.controller.queue.put(aggregate)
         print "Aggregating " + args
 
+    def do_find_samples(self, args):
+        find_samples = Command("findSamples", args)
+        self.controller.queue.put(find_samples)
+        print "Sampling " + args
+
     def do_exit(self, args):
         return True
 

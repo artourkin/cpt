@@ -5,19 +5,19 @@ from pymongo import MongoClient
 
 
 class Aggregator:
-    #def __init__(self, dbHost, dbPort, dbName):
+    # def __init__(self, dbHost, dbPort, dbName):
     #    client = MongoClient(dbHost, dbPort)
     #   self.db = client[dbName]
 
     def get_frequency(self, property):
         match = {"property_name": property}
         group = {"_id": "$property_value", "count": {"$sum": 1}}
-        result = MongoUtils.aggregate( match, group )
+        result = MongoUtils.aggregate(match, group)
 
-               # "$group": {
-               #     "_id": {"file": "$fileID", "property": "$property_name", "property_value": "$property_value"},
-               #     "count": {"$sum": 1}
-               # }
+        # "$group": {
+        #     "_id": {"file": "$fileID", "property": "$property_name", "property_value": "$property_value"},
+        #     "count": {"$sum": 1}
+        # }
 
         return result
 
@@ -40,7 +40,6 @@ class Aggregator:
         return result
 
     def findByFileID(self, fileID):
-
         result = MongoUtils.findbyFile(fileID)
 
         return result

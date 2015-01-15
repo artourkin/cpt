@@ -3,8 +3,10 @@ import threading
 from os import walk
 
 from Main.Common.Configurator import Configurator
+from Main.Logic.Aggregator import Aggregator
 from Main.Logic.Digester import Digester
 from Main.Logic.Gatherer import Gatherer
+from Main.Logic.Sampler import Sampler
 from Main.Utils.MongoUtils import MongoUtils
 
 
@@ -12,8 +14,8 @@ __author__ = 'artur'
 
 
 class Controller(threading.Thread):
-    queue = Queue()      # this queue contains the commands from cmd class
-    jobs = []   # this list contains jobs which are being executed or are already executed.
+    queue = Queue()  # this queue contains the commands from cmd class
+    jobs = []  # this list contains jobs which are being executed or are already executed.
     filter = {}
 
     def __init__(self):
@@ -30,7 +32,7 @@ class Controller(threading.Thread):
         job = threading.Thread(target=self.commands[command.name], args=(self, command.args,))
         self.jobs.append(job)
         job.start()
-        #job.join()  # This affects serial or parallel execution of jobs
+        # job.join()  # This affects serial or parallel execution of jobs
 
 
     # The next section contains all the possible jobs.
@@ -58,7 +60,7 @@ class Controller(threading.Thread):
         return "done"
 
     def cleanCollection(self, args):
-        MongoUtils.cleanCollection(args[0])
+        # MongoUtils.cleanCollection(args[0])
         return "done"
 
     def selectCollection(self, args):
@@ -77,8 +79,15 @@ class Controller(threading.Thread):
         return "done"
 
     def aggregate(self, args):
-        groupby = {"_id": "$" + args[0], "count": {"$sum": 1}}
-        result = MongoUtils.aggregate(self.filter, groupby)
+        aggregator = Aggregator()
+        result = self.aggregator.get_frequency("lastmodified")
+        print result
+
+    def findSamples(self, args):
+        sampler = Sampler()
+        sampler.get_distributions(["lastmodified", "format", "mimetype"])
+        sampler.calculate_cartesian_product()
+        result = sampler.retrieve_samples()
         print result
 
     commands = {"ingest": ingest,
@@ -86,7 +95,8 @@ class Controller(threading.Thread):
                 "cleanCollection": cleanCollection,
                 "selectCollection": selectCollection,
                 "addFilter": addFilter,
-                "aggregate": aggregate}
+                "aggregate": aggregate,
+                "findSamples": findSamples}
 
 
 
