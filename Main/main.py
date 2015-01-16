@@ -1,7 +1,10 @@
-from Main.Logic.Cmd import Cmd
+import sys
+#from Main.Logic.Cmd import Cmd    #TODO: this will not work as Main.Logic.Cmd is not visible from this module by default.
+                                   #check sys.path
 
 if __name__ == '__main__':
-    Cmd().cmdloop()
+    print(sys.path)
+  #  Cmd().cmdloop()
 
 
 
