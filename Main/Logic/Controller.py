@@ -80,15 +80,17 @@ class Controller(threading.Thread):
 
     def aggregate(self, args):
         aggregator = Aggregator()
-        result = self.aggregator.get_frequency("lastmodified")
+        property_name = args[0]
+        result = self.aggregator.get_frequency(property_name)
         print result
 
     def findSamples(self, args):
         sampler = Sampler()
-        sampler.get_distributions(["lastmodified", "format", "mimetype"])
-        sampler.calculate_cartesian_product()
-        result = sampler.retrieve_samples()
-        print result
+        if isinstance(args, list) and args != []:
+            sampler.get_distributions(args)
+            sampler.calculate_cartesian_product()
+            result = sampler.retrieve_samples()
+            print result
 
     commands = {"ingest": ingest,
                 "stop": stopThreads,
