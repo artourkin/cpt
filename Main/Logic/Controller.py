@@ -80,9 +80,10 @@ class Controller(threading.Thread):
 
     def aggregate(self, args):
         aggregator = Aggregator()
-        property_name = args[0]
-        result = self.aggregator.get_frequency(property_name)
-        print result
+        if args != []:
+            property_name = args[0]
+            result = aggregator.get_frequency(property_name)
+            print result
 
     def findSamples(self, args):
         sampler = Sampler()

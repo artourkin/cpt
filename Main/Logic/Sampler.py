@@ -1,3 +1,4 @@
+from django.forms.widgets import boolean_check
 from Main.Common.Configurator import Configurator
 from Main.Elements.Property import Property
 from Main.Logic.Aggregator import Aggregator
@@ -12,7 +13,7 @@ __author__ = 'artur'
 # Then for each cartesian product (prop1: val1, prop2: val2,...) we create a query and submit it to mongodb.
 # If there is no result, then we skip this combination. This should mean there is no file available.
 # If there is 1 result and it is not present in the sample collection, we put it in our resulting sample collection.
-#   If there are more than 1 results, we pick the first not present in the sample collection and put it in the result.
+# If there are more than 1 results, we pick the first not present in the sample collection and put it in the result.
 #
 #
 #
@@ -126,19 +127,29 @@ class Sampler():
                 found = True
                 fileID = document.get("fileID")
                 tmp_documents = aggregator.findByFileID(fileID)
-                for sample_property in sample[:-1]:
+                found=self.bool_check( sample[:-1], tmp_documents)
 
-                    for property in tmp_documents:
-                        assert isinstance(property, Property)
-                        if (property.name == sample_property[0] and
-                                    property.value == sample_property[1]):
-                            found = True
-                            break
-                        found = False
-
-                if (found == True):
+                if (found==True):
                     if not fileID in result:
                         result.append(fileID)
+                    break
 
         return result
         #TODO: test this method carefully! Potentially lots of bugs.
+
+    def bool_check(self, sample_properties, stored_properties):
+        for sample_property in sample_properties:
+            found=False
+            fileID=""
+            for stored_property in stored_properties:
+                assert isinstance(stored_property, Property)
+                if (sample_property[0] == stored_property.name and
+                            sample_property[1] == stored_property.value):
+                    found = True
+                    break
+            if (found == True):
+                continue
+            else:
+                return False
+        return True
+
