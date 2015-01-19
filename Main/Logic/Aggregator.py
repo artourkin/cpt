@@ -1,7 +1,6 @@
 from Main.Utils.MongoUtils import MongoUtils
 
 __author__ = 'artur'
-from pymongo import MongoClient
 
 
 class Aggregator:

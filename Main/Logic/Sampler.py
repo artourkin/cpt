@@ -1,5 +1,3 @@
-from django.forms.widgets import boolean_check
-from Main.Common.Configurator import Configurator
 from Main.Elements.Property import Property
 from Main.Logic.Aggregator import Aggregator
 import itertools

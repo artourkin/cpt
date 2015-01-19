@@ -7,7 +7,6 @@ from Main.Logic.Aggregator import Aggregator
 from Main.Logic.Digester import Digester
 from Main.Logic.Gatherer import Gatherer
 from Main.Logic.Sampler import Sampler
-from Main.Utils.MongoUtils import MongoUtils
 
 
 __author__ = 'artur'
