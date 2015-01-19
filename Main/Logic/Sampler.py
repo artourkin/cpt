@@ -40,22 +40,22 @@ class Sampler():
         return self.frequencies
 
 
-    def calculate_cartesian_product(self):
+    def calculate_cartesian_product(self, limit=10):
         tmp_list = []
         result = []
-        for property, payload in self.frequencies.items():  #Parsing json
+        for property, payload in self.frequencies.items():  # Parsing json
             property_list = []
             assert isinstance(payload, dict)
             distribution = payload.get("result")
-            for bin in distribution:
+            for bin in distribution[:limit]:
                 value = bin.get("_id")
                 count = bin.get("count")
                 property_list.append([property, value, count])
             tmp_list.append(property_list)
 
-        tmp_result = list(itertools.product(*tmp_list))  #Calculate cartesian product
+        tmp_result = list(itertools.product(*tmp_list))  # Calculate cartesian product
 
-        for tmp_tuple in tmp_result:  #Sort samples according to their count in the collection
+        for tmp_tuple in tmp_result:  # Sort samples according to their count in the collection
             assert isinstance(tmp_tuple, tuple)
             tmp_tuple_listed = (list(tmp_tuple))
             weight = 0
@@ -68,45 +68,12 @@ class Sampler():
         result = sorted(result, key=lambda sample: sample[len(sample) - 1],
                         reverse=True)
 
-        for tmp_list in result:  #Cleaning up the count variable
+        for tmp_list in result:  # Cleaning up the count variable
             for prop in tmp_list[:-1]:
                 assert isinstance(prop, list)
                 if len(prop) > 2 and prop[2]:
                     prop.pop(2)
         self.samples_weighted = result
-        return result
-
-    def retrieve_samples(self, max):
-        aggregator = Aggregator()
-        result = []
-        i = 0
-        for sample in self.samples_weighted:
-            query = dict()
-            property = sample[0]
-            assert isinstance(property, list)
-            query.setdefault("property_name", property[0])
-            query.setdefault("property_value", property[1])
-            documents = aggregator.find(query, 100)
-
-            for document in documents:
-                assert isinstance(document, dict)
-                found = True
-                fileID = document.get("fileID")
-                tmp_documents = aggregator.findByFileID(fileID)
-                for sample_property in sample[:-1]:
-
-                    for property in tmp_documents:
-                        assert isinstance(property, Property)
-                        if (property.name == sample_property[0] and
-                                    property.value == sample_property[1]):
-                            found = True
-                            break
-                        found = False
-
-                if (found == True):
-                    if i <= max and not fileID in result:
-                        result.append(fileID)
-                        i += 1
         return result
 
 
@@ -127,20 +94,20 @@ class Sampler():
                 found = True
                 fileID = document.get("fileID")
                 tmp_documents = aggregator.findByFileID(fileID)
-                found=self.bool_check( sample[:-1], tmp_documents)
+                found = self.bool_check(sample[:-1], tmp_documents)
 
-                if (found==True):
+                if (found == True):
                     if not fileID in result:
                         result.append(fileID)
                     break
 
         return result
-        #TODO: test this method carefully! Potentially lots of bugs.
+        # TODO: test this method carefully! Potentially lots of bugs.
 
     def bool_check(self, sample_properties, stored_properties):
         for sample_property in sample_properties:
-            found=False
-            fileID=""
+            found = False
+            fileID = ""
             for stored_property in stored_properties:
                 assert isinstance(stored_property, Property)
                 if (sample_property[0] == stored_property.name and

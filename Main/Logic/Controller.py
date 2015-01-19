@@ -32,7 +32,7 @@ class Controller(threading.Thread):
         job = threading.Thread(target=self.commands[command.name], args=(self, command.args,))
         self.jobs.append(job)
         job.start()
-        # job.join()  # This affects serial or parallel execution of jobs
+        job.join()  # This affects serial or parallel execution of jobs
 
 
     # The next section contains all the possible jobs.
@@ -80,6 +80,7 @@ class Controller(threading.Thread):
 
     def aggregate(self, args):
         aggregator = Aggregator()
+        args = "".join(args).split(" ")
         if args != []:
             property_name = args[0]
             result = aggregator.get_frequency(property_name)
@@ -87,6 +88,7 @@ class Controller(threading.Thread):
 
     def findSamples(self, args):
         sampler = Sampler()
+        args = "".join(args).split(" ")
         if isinstance(args, list) and args != []:
             sampler.get_distributions(args)
             sampler.calculate_cartesian_product()
