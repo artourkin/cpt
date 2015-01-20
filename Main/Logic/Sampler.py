@@ -38,7 +38,7 @@ class Sampler():
         return self.frequencies
 
 
-    def calculate_cartesian_product(self, limit=10):
+    def calculate_cartesian_product(self, limit=10): #TODO: make this limit more visible!
         tmp_list = []
         result = []
         for property, payload in self.frequencies.items():  # Parsing json

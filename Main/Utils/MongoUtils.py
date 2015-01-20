@@ -43,7 +43,7 @@ class MongoUtils:
     @staticmethod
     def find(json):
         collection = Configurator().getCollection()
-        cursor = collection.find(json)
+        cursor = collection.find(json).limit(100)   #TODO: make this limit more visible!
         result = []
         for entry in cursor:
             result.append(entry)
@@ -96,6 +96,7 @@ class MongoUtils:
             query.append({"$match": where})
         if groupby:
             query.append({"$group": groupby})
+        #query.append({"$limit": 10})
         query.append({"$sort": SON([("count", -1)])})
 
 
