@@ -84,6 +84,7 @@ class Controller(threading.Thread):
             property_name = args[0]
             result = aggregator.get_frequency(property_name)
             print result
+            return result
 
     def findSamples(self, args):
         sampler = Sampler()
