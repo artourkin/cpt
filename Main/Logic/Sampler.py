@@ -1,6 +1,7 @@
 from Main.Elements.Property import Property
 from Main.Logic.Aggregator import Aggregator
 import itertools
+from Main.Utils.MongoUtils import MongoUtils
 
 __author__ = 'artur'
 
@@ -19,10 +20,6 @@ __author__ = 'artur'
 #
 
 
-
-
-
-
 class Sampler():
     frequencies = {}
     samples_weighted = []
@@ -30,18 +27,10 @@ class Sampler():
     def __init__(self):
         self.aggregator = Aggregator()
 
-    def get_distributions(self, properties):
 
-        for property in properties:
-            frequency = self.aggregator.get_frequency(property)
-            self.frequencies.setdefault(property, frequency)
-        return self.frequencies
-
-
-    def calculate_cartesian_product(self, limit=10): #TODO: make this limit more visible!
-        tmp_list = []
+    def prepareDataForCartesian(self, frequencies, limit):
         result = []
-        for property, payload in self.frequencies.items():  # Parsing json
+        for property, payload in frequencies.items():  # Parsing json
             property_list = []
             assert isinstance(payload, dict)
             distribution = payload.get("result")
@@ -49,11 +38,12 @@ class Sampler():
                 value = bin.get("_id")
                 count = bin.get("count")
                 property_list.append([property, value, count])
-            tmp_list.append(property_list)
+            result.append(property_list)
+        return result
 
-        tmp_result = list(itertools.product(*tmp_list))  # Calculate cartesian product
-
-        for tmp_tuple in tmp_result:  # Sort samples according to their count in the collection
+    def prepareDataForSorting(self, unsorted):
+        result = []
+        for tmp_tuple in unsorted:  # Sort samples according to their count in the collection
             assert isinstance(tmp_tuple, tuple)
             tmp_tuple_listed = (list(tmp_tuple))
             weight = 0
@@ -62,17 +52,24 @@ class Sampler():
                 weight += prop[2]
             tmp_tuple_listed.append(weight)
             result.append(tmp_tuple_listed)
+        return result
 
-        result = sorted(result, key=lambda sample: sample[len(sample) - 1],
+    def calculate_cartesian_product(self, properties, limit=10):  # TODO: make this limit more visible!
+
+        self.frequencies = self.aggregator.get_distributions(properties)
+        tmp_list = self.prepareDataForCartesian(self.frequencies, limit)
+        cartesian_product = list(itertools.product(*tmp_list))  # Calculate cartesian product
+        unsorted_list = self.prepareDataForSorting(cartesian_product)
+        sorted_list = sorted(unsorted_list, key=lambda sample: sample[len(sample) - 1],
                         reverse=True)
 
-        for tmp_list in result:  # Cleaning up the count variable
+        for tmp_list in sorted_list:  # Cleaning up the count variable
             for prop in tmp_list[:-1]:
                 assert isinstance(prop, list)
                 if len(prop) > 2 and prop[2]:
                     prop.pop(2)
-        self.samples_weighted = result
-        return result
+        self.samples_weighted = sorted_list
+        return sorted_list
 
 
     def retrieve_samples(self):
@@ -91,30 +88,15 @@ class Sampler():
                 assert isinstance(document, dict)
                 found = True
                 fileID = document.get("fileID")
-                tmp_documents = aggregator.findByFileID(fileID)
-                found = self.bool_check(sample[:-1], tmp_documents)
 
-                if (found == True):
-                    if not fileID in result:
+                if MongoUtils.FileHasProperties(fileID, sample[:-1]):
+                    if not fileID in result:                                #TODO: idea for filtering, if we found a file that satisfies our criteria then put +1 to the bin. Finally, accumulate it for all the bins and vuala.
                         result.append(fileID)
                     break
+
+
 
         return result
         # TODO: test this method carefully! Potentially lots of bugs.
 
-    def bool_check(self, sample_properties, stored_properties):
-        for sample_property in sample_properties:
-            found = False
-            fileID = ""
-            for stored_property in stored_properties:
-                assert isinstance(stored_property, Property)
-                if (sample_property[0] == stored_property.name and
-                            sample_property[1] == stored_property.value):
-                    found = True
-                    break
-            if (found == True):
-                continue
-            else:
-                return False
-        return True
 

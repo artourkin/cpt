@@ -22,19 +22,14 @@ class TestSampler(TestCase):
         for property in self.properties:
             self.gatherer.ingest(property)
 
-    def test_get_distributions(self):
-        sampler = Sampler()
-        sampler.get_distributions(["lastmodified", "format"])
 
     def test_calculate_cartesian_product(self):
         sampler = Sampler()
-        sampler.get_distributions(["lastmodified", "format", "mimetype"])
-        sampler.calculate_cartesian_product()
+        sampler.calculate_cartesian_product(["lastmodified", "format", "mimetype"])
 
     def test_retrieve_samples(self):
         sampler = Sampler()
-        sampler.get_distributions(["lastmodified", "format", "mimetype"])
-        sampler.calculate_cartesian_product()
+        sampler.calculate_cartesian_product(["lastmodified", "format", "mimetype"])
         sampler.retrieve_samples()
 
     def tearDown(self):

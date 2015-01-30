@@ -8,24 +8,25 @@ import copy
 
 __author__ = 'artur'
 
+
 class TestMongoUtils(TestCase):
     properties = []
 
     def setUp(self):
         BASE_DIR = os.path.dirname(__file__)
-        digester = Digester(BASE_DIR+"/../../Resources/fits.cfg")
-        self.properties = digester.eat(BASE_DIR+"/../../Resources/FITS/F0.xml")
+        digester = Digester(BASE_DIR + "/../../Resources/fits.cfg")
+        self.properties = digester.eat(BASE_DIR + "/../../Resources/FITS/F0.xml")
         Configurator().setup("unittest", "one")
         for property in self.properties:
             if isinstance(property, Property):
                 result = MongoUtils.insert(property)
 
     def test_insert(self):
-       pass
-       # TODO: create an incorrect property and try to insert it into db
-       # broken_prop = Property(None, 1, "fd", None)
-       # result = MongoUtils.insert(broken_prop)
-       # self.assertFalse(result)
+        pass
+        # TODO: create an incorrect property and try to insert it into db
+        # broken_prop = Property(None, 1, "fd", None)
+        # result = MongoUtils.insert(broken_prop)
+        # self.assertFalse(result)
 
     def test_countCollectionSize(self):
         collectionSize = MongoUtils.countCollectionSize()
@@ -56,8 +57,16 @@ class TestMongoUtils(TestCase):
     def test_aggregate(self):
         where = {"property_name": "lastmodified"}
         groupby = {"_id": "$property_value", "count": {"$sum": 1}}
-        result = MongoUtils.aggregate( where, groupby)
+        result = MongoUtils.aggregate(where, groupby)
         self.assertEqual(result, {u'ok': 1.0, u'result': [{u'count': 1, u'_id': u'2014:09:05 17:27:22+01:00'}]})
+
+
+    def test_getDistinctValues(self):
+        collectionName = Configurator().getCollection().name
+        key = "fileID"
+        query = {"property_name": "format"}
+        result = MongoUtils.getDistinctValues(key, collectionName, query)
+        self.assertEqual(result, [u'/home/roda/roda/tomcat/apache-tomcat-6.0.39/temp/METS.xml1510048826782337618.tmp'])
 
     def tearDown(self):
         MongoUtils.cleanCollection()

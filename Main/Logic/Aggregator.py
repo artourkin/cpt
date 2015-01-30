@@ -25,7 +25,7 @@ class Aggregator:
 
         :param query: query contains a dictionary of key-value pairs
         """
-        result = MongoUtils.find(query)
+        result = MongoUtils.find(query, 100)
 
         return result
 
@@ -42,3 +42,11 @@ class Aggregator:
         result = MongoUtils.findbyFile(fileID)
 
         return result
+
+
+    def get_distributions(self, properties):
+        frequencies={}
+        for property in properties:
+            frequency = self.get_frequency(property)
+            frequencies.setdefault(property, frequency)
+        return frequencies
