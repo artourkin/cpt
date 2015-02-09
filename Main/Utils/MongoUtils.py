@@ -54,7 +54,7 @@ class MongoUtils:
 
         # @staticmethod
         # def find(json, max):
-        #      collection = Configurator().getCollection()
+        # collection = Configurator().getCollection()
         #      cursor = collection.find(json)
         #      result = []
         #      i=0
@@ -94,6 +94,8 @@ class MongoUtils:
     def aggregate(where=None, groupby=None):
         collection = Configurator().getCollection()
         # where=Configurator().filter
+       # if Configurator().filter is not {}:
+       #     return MongoUtils.aggregateWithFilter(where, groupby)
         query = []
         if where:
             query.append({"$match": where})
@@ -104,7 +106,7 @@ class MongoUtils:
 
 
         # query = [
-        #    {"$match": where},
+        # {"$match": where},
         #    {"$group": groupby},
         #    {"$sort": SON([("count", -1)])}
         #]
@@ -156,8 +158,7 @@ class MongoUtils:
         return True
 
 
-    @staticmethod
-    def filter(query):
-        collection = Configurator().getCollection()
+
+
 
 
